@@ -17,8 +17,8 @@ mongoose.connect(uri).then(function () {
         res.send("this is your home page !");
     });
 
-    app.get("/notes/list/:userid", async function (req, res) {
-        var notes = await Note.find({ userid: req.params.userid });
+    app.post("/notes/list", async function (req, res) {
+        var notes = await Note.find({ userid: req.body.userid });
         res.json(notes);
     });
 
@@ -38,8 +38,8 @@ mongoose.connect(uri).then(function () {
     app.post("/notes/delete", async function (req, res) {
         await Note.deleteOne({ id: req.body.id });
         const response = { message: "Note deleted!" + `id:${req.body.id}` }
-        res.json(response)
-    })
+        res.json(response);
+    });
 });
 
 // Starting the server on port 5000
