@@ -17,32 +17,12 @@ mongoose.connect(uri).then(function () {
         res.send("this is your home page !");
     });
 
-    app.post("/notes/list", async function (req, res) {
-        var notes = await Note.find({ userid: req.body.userid });
-        res.json(notes);
-    });
-
-    app.post("/notes/add", async function (req, res) {
-        await Note.deleteOne({ id: req.body.id });
-        const newNote = new Note({
-            id: req.body.id,
-            userid: req.body.userid,
-            title: req.body.title,
-            content: req.body.content,
-        });
-        await newNote.save();
-        const response = { message: "New note created!" + ` id: ${req.body.id}` };
-        res.json(response);
-    });
-
-    app.post("/notes/delete", async function (req, res) {
-        await Note.deleteOne({ id: req.body.id });
-        const response = { message: "Note deleted!" + `id:${req.body.id}` }
-        res.json(response);
-    });
+    const noteRouter = require('./routes/Note')
+    app.use('/notes', noteRouter)
 });
 
 // Starting the server on port 5000
-app.listen(5000, function () {
-    console.log("Server started at port: 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, function () {
+    console.log("Server started at port: "+PORT);
 });
