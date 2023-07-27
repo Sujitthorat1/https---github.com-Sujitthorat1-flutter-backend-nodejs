@@ -14,7 +14,9 @@ app.use(bodyParser.json());
 mongoose.connect(uri).then(function () {
     // App Route
     app.get("/", function (req, res) {
-        res.send("this is your home page !");
+        const response = { statuscode: res.statusCode, message: "API Works!" };
+        res.json(response);
+        // res.json("this is your home page !");
     });
 
     const noteRouter = require('./routes/Note')
